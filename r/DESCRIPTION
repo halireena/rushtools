@@ -1,0 +1,18 @@
+Package: rushtools
+Title: Bioinformatics Helper Functions for Sequences and Expression Data
+Version: 0.2.0
+Authors@R: 
+    person("Halireena Rushdiha", "Mohomed", , "217553546+halireena@users.noreply.github.com", role = c("aut", "cre"))
+Description: Small, tested helper functions for everyday plant
+    bioinformatics: GC content, reverse complements, fold changes,
+    z-scores, multiple-testing correction and tidying differential
+    expression tables.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Imports: 
+    stats
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
