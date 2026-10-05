@@ -27,6 +27,7 @@ rushtools = ["py.typed"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests", "src"]
+pythonpath = ["src"]   # so `pytest` also works before `pip install -e .`
 addopts = "--doctest-modules"
 
 [tool.ruff]

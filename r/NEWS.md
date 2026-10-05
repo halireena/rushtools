@@ -4,6 +4,8 @@
   M, B, D, H, V), matching the Python package.
 * `count_motif()` now errors on an empty motif instead of returning a
   meaningless count.
+* `reverse_complement()` keeps `NA` as `NA`; it used to return the text
+  `"NA"`.
 
 # rushtools 0.2.0
 

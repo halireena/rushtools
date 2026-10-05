@@ -12,6 +12,7 @@ N or the other IUPAC ambiguity codes (R, Y, S, W, K, M, B, D, H, V).}
 }
 \value{
 Character vector of upper-case reverse complements, named like \code{seqs}.
+\code{NA} inputs stay \code{NA}.
 }
 \description{
 Reverse complement of DNA sequences

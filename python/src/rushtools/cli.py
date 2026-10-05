@@ -9,15 +9,25 @@ from rushtools.assembly import n50
 from rushtools.parsers import read_fasta
 from rushtools.seq import find_orfs, gc_content, reverse_complement
 
+_IUPAC_DNA = set("ACGTRYSWKMBDHVNacgtryswkmbdhvn")
+
+
+def _non_negative_int(text: str) -> int:
+    value = int(text)
+    if value < 0:
+        raise argparse.ArgumentTypeError(f"must be 0 or more, got {value}")
+    return value
+
 
 def _cmd_gc(args: argparse.Namespace) -> None:
     print("id\tlength\tgc")
     for rid, seq in read_fasta(args.fasta):
         try:
-            gc = f"{gc_content(seq):.{args.digits}f}"
+            gc = gc_content(seq)
         except ValueError:  # no A/C/G/T bases, e.g. an all-N record
-            gc = "NA"
-        print(f"{rid}\t{len(seq)}\t{gc}")
+            print(f"{rid}\t{len(seq)}\tNA")
+        else:
+            print(f"{rid}\t{len(seq)}\t{gc:.{args.digits}f}")
 
 
 def _cmd_stats(args: argparse.Namespace) -> None:
@@ -31,6 +41,9 @@ def _cmd_stats(args: argparse.Namespace) -> None:
 
 
 def _cmd_revcomp(args: argparse.Namespace) -> None:
+    bad = sorted(set(args.sequence) - _IUPAC_DNA)
+    if bad:
+        raise ValueError(f"not a DNA sequence (unexpected characters: {''.join(bad)})")
     print(reverse_complement(args.sequence))
 
 
@@ -48,7 +61,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     p = sub.add_parser("gc", help="GC content of every sequence in a FASTA file")
     p.add_argument("fasta", help="input FASTA (plain or .gz)")
-    p.add_argument("-d", "--digits", type=int, default=3, help="decimal places (default: 3)")
+    p.add_argument("-d", "--digits", type=_non_negative_int, default=3, help="decimal places (default: 3)")
     p.set_defaults(func=_cmd_gc)
 
     p = sub.add_parser("stats", help="number of sequences, total length, N50")

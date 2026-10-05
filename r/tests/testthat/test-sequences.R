@@ -30,3 +30,8 @@ test_that("reverse_complement handles IUPAC ambiguity codes", {
 test_that("reverse_complement rejects RNA and other letters", {
   expect_error(reverse_complement("AUGC"), "Non-DNA")
 })
+
+test_that("reverse_complement keeps NA as NA (not the text \"NA\")", {
+  expect_identical(reverse_complement(c(a = "ATG", b = NA)),
+                   c(a = "CAT", b = NA_character_))
+})

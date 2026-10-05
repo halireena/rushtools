@@ -27,6 +27,7 @@ gc_content <- function(seqs, ignore_n = TRUE) {
 #' @param seqs Character vector of DNA sequences (any case) using A, C, G, T,
 #'   N or the other IUPAC ambiguity codes (R, Y, S, W, K, M, B, D, H, V).
 #' @return Character vector of upper-case reverse complements, named like `seqs`.
+#'   `NA` inputs stay `NA`.
 #' @examples
 #' reverse_complement("ATGCCC")
 #' reverse_complement(c(fwd = "GGATCCNA"))
@@ -43,6 +44,7 @@ reverse_complement <- function(seqs) {
   comp <- chartr("ACGTRYSWKMBDHVN", "TGCAYRSWMKVHDBN", seqs)
   out <- vapply(strsplit(comp, ""), function(b) paste(rev(b), collapse = ""),
                 FUN.VALUE = character(1))
+  out[is.na(seqs)] <- NA_character_  # otherwise NA comes back as the text "NA"
   names(out) <- names(seqs)
   out
 }
