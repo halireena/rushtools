@@ -20,7 +20,8 @@ def gc_content(seq: str, ignore_n: bool = True) -> float:
 
     Args:
         seq: DNA sequence, any case.
-        ignore_n: leave N bases out of the denominator.
+        ignore_n: leave N and any other non-ACGT symbols out of the denominator
+            (matches the R package).
 
     Raises:
         ValueError: if the sequence has no usable bases.
@@ -30,7 +31,7 @@ def gc_content(seq: str, ignore_n: bool = True) -> float:
     """
     s = seq.upper()
     gc = s.count("G") + s.count("C")
-    denom = len(s) - s.count("N") if ignore_n else len(s)
+    denom = sum(s.count(b) for b in "ACGT") if ignore_n else len(s)
     if denom == 0:
         raise ValueError("sequence has no A/C/G/T bases")
     return gc / denom
@@ -99,13 +100,25 @@ def find_orfs(seq: str, min_len: int = 30) -> list[dict]:
     return sorted(orfs, key=lambda o: (o["start"], o["strand"]))
 
 
-def kmer_count(seq: str, k: int) -> dict[str, int]:
-    """Count overlapping k-mers. Returns {kmer: count}."""
+def kmer_count(seq: str, k: int, *, skip_ambiguous: bool = True) -> dict[str, int]:
+    """Count overlapping k-mers, case-insensitively. Returns {kmer: count}.
+
+    Args:
+        seq: DNA sequence, any case.
+        k: k-mer length.
+        skip_ambiguous: leave out k-mers containing anything other than A/C/G/T.
+
+    >>> kmer_count("ACGNacg", 2)
+    {'AC': 2, 'CG': 2}
+    """
     if k < 1:
         raise ValueError("k must be >= 1")
+    s = seq.upper()
     counts: dict[str, int] = {}
-    for i in range(len(seq) - k + 1):
-        kmer = seq[i:i + k]
+    for i in range(len(s) - k + 1):
+        kmer = s[i:i + k]
+        if skip_ambiguous and kmer.strip("ACGT"):
+            continue
         counts[kmer] = counts.get(kmer, 0) + 1
     return counts
 
@@ -114,4 +127,4 @@ def hamming(a: str, b: str) -> int:
     """Number of positions at which two equal-length sequences differ."""
     if len(a) != len(b):
         raise ValueError(f"sequences differ in length: {len(a)} vs {len(b)}")
-    return sum(x != y for x, y in zip(a, b))
+    return sum(x != y for x, y in zip(a, b, strict=True))

@@ -3,6 +3,8 @@
 The most useful functions are imported here, so users can write
 ``from rushtools import gc_content`` instead of ``from rushtools.seq import gc_content``.
 """
+from importlib.metadata import PackageNotFoundError, version
+
 from rushtools.assembly import n50
 from rushtools.parsers import read_fasta, read_fastq, write_fasta
 from rushtools.seq import (
@@ -15,7 +17,10 @@ from rushtools.seq import (
     translate,
 )
 
-__version__ = "0.1.0"
+try:
+    __version__ = version("rushtools")
+except PackageNotFoundError:  # running from a source tree without installing
+    __version__ = "0.0.0"
 
 __all__ = [
     "CODON_TABLE",

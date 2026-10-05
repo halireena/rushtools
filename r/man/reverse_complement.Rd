@@ -7,11 +7,12 @@
 reverse_complement(seqs)
 }
 \arguments{
-\item{seqs}{Character vector of DNA sequences containing only A, C, G, T
-or N (any case).}
+\item{seqs}{Character vector of DNA sequences (any case) using A, C, G, T,
+N or the other IUPAC ambiguity codes (R, Y, S, W, K, M, B, D, H, V).}
 }
 \value{
 Character vector of upper-case reverse complements, named like \code{seqs}.
+\code{NA} inputs stay \code{NA}.
 }
 \description{
 Reverse complement of DNA sequences
@@ -19,4 +20,5 @@ Reverse complement of DNA sequences
 \examples{
 reverse_complement("ATGCCC")
 reverse_complement(c(fwd = "GGATCCNA"))
+reverse_complement("ACGTRY")  # IUPAC codes: R <-> Y
 }

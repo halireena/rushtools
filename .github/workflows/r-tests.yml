@@ -1,13 +1,14 @@
-name: R tests
+name: R CMD check
 
-on: push
+on:
+  push:
+  pull_request:
 
 jobs:
-  test:
+  check:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: r
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -18,7 +19,12 @@ jobs:
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           working-directory: r
-          extra-packages: any::devtools
+          extra-packages: any::rcmdcheck
+          needs: check
 
-      - name: Run devtools::test()
-        run: Rscript -e 'devtools::test(stop_on_failure = TRUE)'
+      # Runs the tests and also catches stale man/ pages, NAMESPACE problems
+      # and broken examples, which devtools::test() alone would miss.
+      - uses: r-lib/actions/check-r-package@v2
+        with:
+          working-directory: r
+          upload-snapshots: true

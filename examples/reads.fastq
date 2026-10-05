@@ -1,0 +1,12 @@
+@read1 made-up good-quality read
+ATGCCGGGGTACCGTAGTTT
++
+IIIIIIIIIIIIIIIIIIII
+@read2 made-up read whose quality drops towards the end
+GTCTGCGACCTCACAAAATT
++
+IIIIIIIIIIII55555+++
+@read3 made-up poor read with an uncalled base (N)
+TGGGCATGCNTTTATCCCGA
++
+555555+++!++++++++++
