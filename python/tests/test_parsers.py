@@ -39,3 +39,31 @@ def test_n50():
     assert n50([2, 2, 2, 3, 3, 4, 8, 8]) == 8
     with pytest.raises(ValueError):
         n50([])
+
+
+def test_fasta_empty_header_raises(tmp_path):
+    path = tmp_path / "bad.fasta"
+    path.write_text(">\nACGT\n")
+    with pytest.raises(ValueError, match="empty FASTA header"):
+        list(read_fasta(path))
+
+
+def test_fastq_empty_header_raises(tmp_path):
+    path = tmp_path / "bad.fastq"
+    path.write_text("@\nACGT\n+\nIIII\n")
+    with pytest.raises(ValueError, match="empty FASTQ header"):
+        list(read_fastq(path))
+
+
+def test_fastq_tolerates_blank_lines_and_gzip(tmp_path):
+    path = tmp_path / "r.fastq.gz"
+    with gzip.open(path, "wt") as fh:
+        fh.write("@r1\nAC\n+\nII\n\n@r2\nGT\n+\n!!\n\n")
+    assert [r[0] for r in read_fastq(path)] == ["r1", "r2"]
+
+
+def test_fastq_malformed_raises(tmp_path):
+    path = tmp_path / "bad.fastq"
+    path.write_text("@r1\nACGT\n+\nII\n")
+    with pytest.raises(ValueError, match="malformed"):
+        list(read_fastq(path))

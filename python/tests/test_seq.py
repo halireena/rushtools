@@ -69,3 +69,14 @@ def test_hamming():
     assert hamming("GATTACA", "GACTATA") == 2
     with pytest.raises(ValueError):
         hamming("ATG", "AT")
+
+
+def test_gc_content_ignores_all_ambiguity_codes():
+    # matches the R package: anything other than A/C/G/T leaves the denominator
+    assert gc_content("GCRYSS") == 1.0
+    assert gc_content("GCRYSS", ignore_n=False) == pytest.approx(2 / 6)
+
+
+def test_kmer_count_case_insensitive_and_skips_ambiguous():
+    assert kmer_count("acgNN", 2) == {"AC": 1, "CG": 1}
+    assert kmer_count("acgNN", 2, skip_ambiguous=False) == {"AC": 1, "CG": 1, "GN": 1, "NN": 1}

@@ -24,7 +24,10 @@ def read_fasta(path) -> Iterator[tuple[str, str]]:
             if line.startswith(">"):
                 if rid is not None:
                     yield rid, "".join(chunks)
-                rid, chunks = line[1:].split()[0], []
+                words = line[1:].split()
+                if not words:
+                    raise ValueError(f"{path}: empty FASTA header")
+                rid, chunks = words[0], []
             else:
                 if rid is None:
                     raise ValueError(f"{path}: sequence before the first '>' header")
@@ -40,12 +43,17 @@ def read_fastq(path) -> Iterator[tuple[str, str, list[int]]]:
             header = fh.readline()
             if not header:
                 return
+            if not header.strip():
+                continue  # tolerate blank lines between records
             seq = fh.readline().rstrip("\n")
             plus = fh.readline()
             qual = fh.readline().rstrip("\n")
             if not header.startswith("@") or not plus.startswith("+") or len(seq) != len(qual):
                 raise ValueError(f"{path}: malformed FASTQ record near {header.strip()!r}")
-            yield header[1:].split()[0], seq, [ord(c) - 33 for c in qual]
+            words = header[1:].split()
+            if not words:
+                raise ValueError(f"{path}: empty FASTQ header")
+            yield words[0], seq, [ord(c) - 33 for c in qual]
 
 
 def write_fasta(records: Iterable[tuple[str, str]], path, width: int = 60) -> int:

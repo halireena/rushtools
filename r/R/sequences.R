@@ -24,22 +24,23 @@ gc_content <- function(seqs, ignore_n = TRUE) {
 
 #' Reverse complement of DNA sequences
 #'
-#' @param seqs Character vector of DNA sequences containing only A, C, G, T
-#'   or N (any case).
+#' @param seqs Character vector of DNA sequences (any case) using A, C, G, T,
+#'   N or the other IUPAC ambiguity codes (R, Y, S, W, K, M, B, D, H, V).
 #' @return Character vector of upper-case reverse complements, named like `seqs`.
 #' @examples
 #' reverse_complement("ATGCCC")
 #' reverse_complement(c(fwd = "GGATCCNA"))
+#' reverse_complement("ACGTRY")  # IUPAC codes: R <-> Y
 #' @export
 reverse_complement <- function(seqs) {
   stopifnot("`seqs` must be character" = is.character(seqs))
   seqs <- toupper(seqs)
-  bad <- grepl("[^ACGTN]", seqs)
+  bad <- grepl("[^ACGTRYSWKMBDHVN]", seqs)
   if (any(bad)) {
     stop("Non-DNA characters found in sequence(s) ",
          paste(which(bad), collapse = ", "), call. = FALSE)
   }
-  comp <- chartr("ACGTN", "TGCAN", seqs)
+  comp <- chartr("ACGTRYSWKMBDHVN", "TGCAYRSWMKVHDBN", seqs)
   out <- vapply(strsplit(comp, ""), function(b) paste(rev(b), collapse = ""),
                 FUN.VALUE = character(1))
   names(out) <- names(seqs)
@@ -58,6 +59,9 @@ reverse_complement <- function(seqs) {
 #' @export
 count_motif <- function(seqs, motif) {
   stopifnot(is.character(seqs), is.character(motif), length(motif) == 1)
+  if (is.na(motif) || !nzchar(motif)) {
+    stop("`motif` must be a non-empty string", call. = FALSE)
+  }
   hits <- gregexpr(toupper(motif), toupper(seqs), fixed = TRUE)
   out <- vapply(hits, function(h) sum(h > 0), FUN.VALUE = integer(1))
   names(out) <- names(seqs)

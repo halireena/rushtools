@@ -22,6 +22,11 @@ test_that("reverse_complement is correct and reversible", {
   expect_equal(reverse_complement(reverse_complement(s)), s)
 })
 
+test_that("reverse_complement handles IUPAC ambiguity codes", {
+  expect_equal(reverse_complement("ACGTRYKMBV"), "BVKMRYACGT")
+  expect_equal(reverse_complement("SWN"), "NWS")
+})
+
 test_that("reverse_complement rejects RNA and other letters", {
   expect_error(reverse_complement("AUGC"), "Non-DNA")
 })

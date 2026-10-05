@@ -5,17 +5,18 @@ Small, tested Python helpers for everyday plant bioinformatics, built while lear
 ## Install
 
 ```bash
-pip install git+https://github.com/USER/rushtools.git          # latest version
-pip install git+https://github.com/USER/rushtools.git@v0.1.0   # a specific tagged version
+pip install "git+https://github.com/halireena/rushtools#subdirectory=python"          # latest version
+pip install "git+https://github.com/halireena/rushtools@v0.1.0#subdirectory=python"  # a tagged version
 ```
 
 For development (editable install + tests):
 
 ```bash
-git clone https://github.com/USER/rushtools.git
-cd rushtools
+git clone https://github.com/halireena/rushtools.git
+cd rushtools/python
 pip install -e ".[dev]"
-pytest
+pytest          # unit tests + the examples in the docstrings
+ruff check .    # lint
 ```
 
 ## Use in Python

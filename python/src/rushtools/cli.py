@@ -13,11 +13,17 @@ from rushtools.seq import find_orfs, gc_content, reverse_complement
 def _cmd_gc(args: argparse.Namespace) -> None:
     print("id\tlength\tgc")
     for rid, seq in read_fasta(args.fasta):
-        print(f"{rid}\t{len(seq)}\t{gc_content(seq):.{args.digits}f}")
+        try:
+            gc = f"{gc_content(seq):.{args.digits}f}"
+        except ValueError:  # no A/C/G/T bases, e.g. an all-N record
+            gc = "NA"
+        print(f"{rid}\t{len(seq)}\t{gc}")
 
 
 def _cmd_stats(args: argparse.Namespace) -> None:
     lengths = [len(seq) for _, seq in read_fasta(args.fasta)]
+    if not lengths:
+        raise ValueError(f"{args.fasta}: no sequences found")
     print(f"sequences\t{len(lengths)}")
     print(f"total_bp\t{sum(lengths)}")
     print(f"longest\t{max(lengths)}")
@@ -65,7 +71,7 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
         args.func(args)
-    except (FileNotFoundError, ValueError) as err:
+    except (OSError, ValueError) as err:
         print(f"rushtools: error: {err}", file=sys.stderr)
         return 1
     return 0
