@@ -79,9 +79,10 @@ tidy_de_table(cbind(gene = rownames(de), de), padj_col = "padj")
 
 ## Tests
 
-From this `r/` folder (needs `install.packages("testthat")` once):
+From the top `rushtools` folder (needs `install.packages("testthat")` once):
 
 ```bash
+cd r
 Rscript -e 'testthat::test_local(".")'
 ```
 

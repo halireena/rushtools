@@ -25,8 +25,15 @@ ruff check .    # lint
 ```
 
 The examples below use the tiny made-up files in
-[`../examples/`](../examples/) and are run from the top `rushtools` folder
-(`cd ..` if you are in `python/`). New words (ORF, N50, Phred...) are explained in the
+[`../examples/`](../examples/) and are run from the top `rushtools` folder:
+
+```bash
+cd ..    # from rushtools/python back to rushtools, where examples/ lives
+```
+
+(If you installed without cloning, download
+[`examples/genes.fasta`](../examples/genes.fasta) or use your own FASTA file.)
+New words (ORF, N50, Phred...) are explained in the
 [glossary](../README.md#glossary).
 
 ## Use in Python

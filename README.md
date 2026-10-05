@@ -185,17 +185,21 @@ page, e.g. `?tidy_de_table`. Full list: [`r/README.md`](r/README.md).
 
 ## Run the tests locally
 
-Python (from the `python/` folder, with the virtual environment active):
+Python (from the top `rushtools` folder, with the virtual environment active):
 
 ```bash
+cd python
 pytest          # unit tests + the examples in the docstrings
 ruff check .    # lint (style and common-mistake checks)
+cd ..
 ```
 
-R (from the `r/` folder; needs `install.packages("testthat")` once):
+R (needs `install.packages("testthat")` once):
 
 ```bash
+cd r
 Rscript -e 'testthat::test_local(".")'
+cd ..
 ```
 
 or, if you use devtools, `devtools::test()` inside R.
