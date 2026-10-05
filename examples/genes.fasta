@@ -1,0 +1,10 @@
+>geneA made-up gene with one open reading frame
+CTTCAATGCCGGGGTACCGTAGTTTGTCTGCGACCTCACAAAATTTGGGCATGCTTTTAT
+CCCGACGCTCTCTATCCACACGATTGGCGACGTCGGGGCTCAAGAAGAATTAAGTTAGCT
+AACGT
+>geneB made-up GC-rich fragment
+GCGGCCGCTAGCGGCCGGGCGCATGCCGCGGC
+>geneC made-up AT-rich fragment with a run of unknown bases (N)
+ATTATANNNNNNTATAAATTGCATTTA
+>scaffold_gap made-up record that is only N (no real bases)
+NNNNNNNNNNNNNNNNNNNN

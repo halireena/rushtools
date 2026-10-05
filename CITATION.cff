@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use rushtools, please cite it as below."
+type: software
+title: "rushtools: small, tested helpers for everyday plant bioinformatics in R and Python"
+authors:
+  - given-names: Halireena Rushdiha
+    family-names: Mohomed
+version: 0.2.0
+license: MIT
+repository-code: "https://github.com/halireena/rushtools"
+keywords:
+  - bioinformatics
+  - DNA
+  - FASTA
+  - FASTQ
+  - differential expression
+  - R
+  - Python
