@@ -1,6 +1,6 @@
 Package: rushtools
 Title: Bioinformatics Helper Functions for Sequences and Expression Data
-Version: 0.2.0.9000
+Version: 0.3.0
 Authors@R: 
     person("Halireena Rushdiha", "Mohomed", , "217553546+halireena@users.noreply.github.com", role = c("aut", "cre"))
 Description: Small, tested helper functions for everyday plant

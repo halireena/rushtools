@@ -1,6 +1,6 @@
 # Changelog (Python package)
 
-## Unreleased
+## 0.2.0
 
 - `rushtools gc --digits` with a negative number now gives a clear error;
   it used to print `NA` for every record.
@@ -8,9 +8,6 @@
   instead of printing nonsense. The `reverse_complement()` function itself
   is unchanged.
 - `pytest` works from `python/` even before `pip install -e .`.
-
-## 0.2.0
-
 - `read_fasta()` / `read_fastq()`: a bare `>` or `@` header is a clear
   `ValueError` instead of an `IndexError`; FASTQ blank lines between
   records are tolerated.

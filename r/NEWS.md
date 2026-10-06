@@ -1,4 +1,4 @@
-# rushtools (development version)
+# rushtools 0.3.0
 
 * `reverse_complement()` now accepts IUPAC ambiguity codes (R, Y, S, W, K,
   M, B, D, H, V), matching the Python package.
